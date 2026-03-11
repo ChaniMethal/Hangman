@@ -1,4 +1,4 @@
-# Hangman
+# 🎮Hangman
 
 ## Description
 This game of Hangman was designed to be a fun game played by all. 
