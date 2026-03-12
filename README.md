@@ -1,5 +1,5 @@
-# 🎮Hangman
-![Hangman](Images/hangman.png)
+# Hangman
+
 ## Description
 This game of Hangman was designed to be a fun game played by all. 
 This program uses the Gnuci Disctionary to select a random word.
@@ -33,3 +33,8 @@ The player guesses letters to reveal the word before the player makes too many i
 
 ## Author:
 created by Chani Methal
+
+
+<img width="796" height="444" alt="Hangman" src="https://github.com/user-attachments/assets/2b8df30b-62a4-484f-aada-be4c6d8a4cf2" />
+
+
