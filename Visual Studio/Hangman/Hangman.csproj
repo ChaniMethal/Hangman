@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>Hangman</AssemblyName>
+    <ApplicationIcon>3792032-death-deceased-gallows-halloween_109040.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="3792032-death-deceased-gallows-halloween_109040.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="gnuciDictionary" Version="0.0.9" />
+  </ItemGroup>
+
+</Project>
