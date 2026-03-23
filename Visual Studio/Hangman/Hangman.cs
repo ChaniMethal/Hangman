@@ -33,6 +33,7 @@ namespace Hangman
 
         private void TblMan_Paint(object? sender, PaintEventArgs e)
         {
+            //AS Move code into procedure and call it from here
             Graphics g = e.Graphics;
             Pen p = new Pen(Color.White, 4);
 
