@@ -64,6 +64,7 @@
             lblWord = new Label();
             tblTopRow = new TableLayoutPanel();
             lblHeader = new Label();
+            lblTimer = new Label();
             btnStart = new Button();
             btnGiveUp = new Button();
             tblMain.SuspendLayout();
@@ -550,13 +551,15 @@
             // 
             // tblTopRow
             // 
-            tblTopRow.ColumnCount = 3;
-            tblTopRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
+            tblTopRow.ColumnCount = 4;
+            tblTopRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tblTopRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            tblTopRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tblTopRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
+            tblTopRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
             tblTopRow.Controls.Add(lblHeader, 0, 0);
-            tblTopRow.Controls.Add(btnStart, 1, 0);
-            tblTopRow.Controls.Add(btnGiveUp, 2, 0);
+            tblTopRow.Controls.Add(lblTimer, 1, 0);
+            tblTopRow.Controls.Add(btnStart, 2, 0);
+            tblTopRow.Controls.Add(btnGiveUp, 3, 0);
             tblTopRow.Dock = DockStyle.Fill;
             tblTopRow.Location = new Point(3, 3);
             tblTopRow.Name = "tblTopRow";
@@ -578,15 +581,29 @@
             lblHeader.Text = "HANGMAN";
             lblHeader.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // lblTimer
+            // 
+            lblTimer.AutoSize = true;
+            lblTimer.BackColor = Color.SkyBlue;
+            lblTimer.Dock = DockStyle.Fill;
+            lblTimer.Font = new Font("Arial Narrow", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTimer.ForeColor = SystemColors.ControlLightLight;
+            lblTimer.Location = new Point(400, 0);
+            lblTimer.Name = "lblTimer";
+            lblTimer.Size = new Size(152, 61);
+            lblTimer.TabIndex = 3;
+            lblTimer.Text = "Time Left: 60s";
+            lblTimer.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // btnStart
             // 
             btnStart.BackColor = Color.SkyBlue;
             btnStart.Dock = DockStyle.Fill;
             btnStart.Font = new Font("Showcard Gothic", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnStart.ForeColor = SystemColors.ControlLightLight;
-            btnStart.Location = new Point(479, 3);
+            btnStart.Location = new Point(558, 3);
             btnStart.Name = "btnStart";
-            btnStart.Size = new Size(152, 55);
+            btnStart.Size = new Size(113, 55);
             btnStart.TabIndex = 1;
             btnStart.Text = "Start ";
             btnStart.UseVisualStyleBackColor = false;
@@ -597,9 +614,9 @@
             btnGiveUp.Dock = DockStyle.Fill;
             btnGiveUp.Font = new Font("Showcard Gothic", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnGiveUp.ForeColor = SystemColors.ControlLightLight;
-            btnGiveUp.Location = new Point(637, 3);
+            btnGiveUp.Location = new Point(677, 3);
             btnGiveUp.Name = "btnGiveUp";
-            btnGiveUp.Size = new Size(154, 55);
+            btnGiveUp.Size = new Size(114, 55);
             btnGiveUp.TabIndex = 2;
             btnGiveUp.Text = "GIVE UP";
             btnGiveUp.UseVisualStyleBackColor = false;
@@ -664,5 +681,6 @@
         private Button btnGiveUp;
         private Label lblWord;
         private Label lblWrongGuesses;
+        private Label lblTimer;
     }
 }

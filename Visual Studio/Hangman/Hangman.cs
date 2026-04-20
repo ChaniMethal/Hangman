@@ -9,6 +9,9 @@ namespace Hangman
         Char[] cdisplayword;
         Random rnd = new();
         int nwrongguesses = 0;
+        const int GameTimeSeconds = 60;
+        int nsecondsremaining = GameTimeSeconds;
+        readonly System.Windows.Forms.Timer gametimer = new();
 
         public Hangman()
         {
@@ -25,6 +28,9 @@ namespace Hangman
 
             btnStart.Click += BtnStart_Click;
             btnGiveUp.Click += BtnGiveUp_Click;
+            gametimer.Interval = 1000;
+            gametimer.Tick += GameTimer_Tick;
+            UpdateTimerDisplay();
 
             lstbuttons.ForEach(b => b.Enabled = false);
 
@@ -76,6 +82,7 @@ namespace Hangman
         {
             if (nwrongguesses >= 6)
             {
+                gametimer.Stop();
                 lblWord.Text = string.Join(" ", scurrentword.ToCharArray());
                 DisableLetterButtons();
                 btnGiveUp.Enabled = false;
@@ -85,18 +92,43 @@ namespace Hangman
         }
         private void GiveUp()
         {
+            gametimer.Stop();
             lblWord.Text = string.Join(" ", scurrentword.ToCharArray());
             DisableLetterButtons();
+            btnGiveUp.Enabled = false;
+            btnGiveUp.BackColor = Color.White;
             MessageBox.Show("You gave up.", "Game Over");
         }
         private void Winner()
         {
             if (!cdisplayword.Contains('_'))
             {
+                gametimer.Stop();
                 btnGiveUp.Enabled = false;
+                btnGiveUp.BackColor = Color.White;
                 
                 MessageBox.Show("You Win!");
                 DisableLetterButtons();
+            }
+        }
+        private void UpdateTimerDisplay()
+        {
+            lblTimer.Text = $"Time Left: {nsecondsremaining}s";
+        }
+
+        private void GameTimer_Tick(object? sender, EventArgs e)
+        {
+            nsecondsremaining--;
+            UpdateTimerDisplay();
+
+            if (nsecondsremaining <= 0)
+            {
+                gametimer.Stop();
+                lblWord.Text = string.Join(" ", scurrentword.ToCharArray());
+                DisableLetterButtons();
+                btnGiveUp.Enabled = false;
+                btnGiveUp.BackColor = Color.White;
+                MessageBox.Show("Time's up! You lost.", "Game Over");
             }
         }
         private void WhenletterIsClicked(Button btn)
@@ -175,6 +207,9 @@ namespace Hangman
             EnableLetterButtons();
 
             nwrongguesses = 0;
+            nsecondsremaining = GameTimeSeconds;
+            UpdateTimerDisplay();
+            gametimer.Start();
             tblMan.Invalidate();
             DisplayWrongGuesses();
         }
