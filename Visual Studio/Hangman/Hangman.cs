@@ -31,9 +31,8 @@ namespace Hangman
             tblMan.Paint += TblMan_Paint;
         }
 
-        private void TblMan_Paint(object? sender, PaintEventArgs e)
+        private void DrawMan()
         {
-            //AS Move code into procedure and call it from here
             Graphics g = e.Graphics;
             Pen p = new Pen(Color.White, 4);
 
@@ -66,6 +65,11 @@ namespace Hangman
             // right leg
             if (nwrongguesses >= 6)
                 g.DrawLine(p, 170, 200, 200, 245);
+        }
+
+        private void TblMan_Paint(object? sender, PaintEventArgs e)
+        {
+            DrawMan()     
         }
        
         private void DisplayWrongGuesses()
