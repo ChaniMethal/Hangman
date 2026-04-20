@@ -37,7 +37,7 @@ namespace Hangman
             tblMan.Paint += TblMan_Paint;
         }
 
-        private void DrawMan()
+        private void DrawMan(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             Pen p = new Pen(Color.White, 4);
@@ -75,7 +75,7 @@ namespace Hangman
 
         private void TblMan_Paint(object? sender, PaintEventArgs e)
         {
-            DrawMan()     
+            DrawMan(e);     
         }
        
         private void DisplayWrongGuesses()
