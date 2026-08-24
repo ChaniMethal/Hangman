@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HangmanMAUI.HangmanGame"
+             Title="HangmanGame">
+    <Grid BackgroundColor="SteelBlue" Margin="20" ColumnDefinitions="*,2*" RowDefinitions="Auto,*,*" ColumnSpacing="10" RowSpacing="10">
+
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" ColumnDefinitions="2*,*,Auto,Auto" ColumnSpacing="8">
+            <Label Text="HANGMAN" Grid.Column="0" FontSize="40" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+            <Label Text="Time Left: 60s" Grid.Column="1" FontSize="20" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" BackgroundColor="SkyBlue"/>
+            <Button Text="START" Grid.Column="2" FontSize="20" FontAttributes="Bold" Padding="20,10" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="GIVE UP" Grid.Column="3" FontSize="20" FontAttributes="Bold" Padding="20,10" Style="{StaticResource Key=game-buttons}"/>
+        </Grid>
+
+        <Border Grid.Row="1" Grid.Column="0" Grid.RowSpan="2">
+            <Grid RowDefinitions="*,Auto">
+                <Label x:Name="lblWrongGuesses" Grid.Row="1" Text="Wrong Guesses: 0" BackgroundColor="SkyBlue" TextColor="White" FontSize="18" Padding="10" HorizontalTextAlignment="Center"/>
+            </Grid>
+        </Border>
+
+
+        <Border Grid.Row="1" Grid.Column="1" BackgroundColor="SkyBlue">
+            <Label x:Name="lblWord" Text="_ _ _ _ _ _ _" FontSize="35" TextColor="White" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+        </Border>
+        
+
+        <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*,*,*,*,*,*,*,*,*,*" RowDefinitions="*,*,*" ColumnSpacing="5" RowSpacing="5">
+            <Button Text="A" Grid.Row="0" Grid.Column="0" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="B" Grid.Row="0" Grid.Column="1" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="C" Grid.Row="0" Grid.Column="2" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="D" Grid.Row="0" Grid.Column="3" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="E" Grid.Row="0" Grid.Column="4" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="F" Grid.Row="0" Grid.Column="5" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="G" Grid.Row="0" Grid.Column="6" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="H" Grid.Row="0" Grid.Column="7" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="I" Grid.Row="0" Grid.Column="8" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="J" Grid.Row="0" Grid.Column="9" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="K" Grid.Row="1" Grid.Column="0" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="L" Grid.Row="1" Grid.Column="1" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="M" Grid.Row="1" Grid.Column="2" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="N" Grid.Row="1" Grid.Column="3" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="O" Grid.Row="1" Grid.Column="4" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="P" Grid.Row="1" Grid.Column="5" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="Q" Grid.Row="1" Grid.Column="6" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="R" Grid.Row="1" Grid.Column="7" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="S" Grid.Row="1" Grid.Column="8" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="T" Grid.Row="1" Grid.Column="9" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="U" Grid.Row="2" Grid.Column="2" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="V" Grid.Row="2" Grid.Column="3" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="W" Grid.Row="2" Grid.Column="4" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="X" Grid.Row="2" Grid.Column="5" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="Y" Grid.Row="2" Grid.Column="6" Style="{StaticResource Key=game-buttons}"/>
+            <Button Text="Z" Grid.Row="2" Grid.Column="7" Style="{StaticResource Key=game-buttons}"/>
+                                                          
+        </Grid>
+
+    </Grid>
+</ContentPage>
