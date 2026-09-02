@@ -1,3 +1,6 @@
 <Solution>
+  <Project Path="../HangmanMAUI/HangmanMAUI/HangmanMAUI.csproj" />
+  <Project Path="../HangmanSystem/HangmanSystem.csproj" Id="5c466c95-b077-43bc-817c-55d9ca9b9c1f" />
+  <Project Path="../HangmanTest/HangmanTest.csproj" Id="b6e317b7-c3b6-4f66-9f34-6bab264b142d" />
   <Project Path="Hangman/Hangman.csproj" />
 </Solution>
