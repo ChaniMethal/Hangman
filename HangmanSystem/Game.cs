@@ -9,6 +9,18 @@ namespace HangmanSystem
         public event PropertyChangedEventHandler? PropertyChanged;
         public const int MaxWrongGuesses = 6;
 
+        public event EventHandler? ScoreChanged;
+
+        private static int gamesplayed;
+        private static int gameswon;
+        private static int gameslost;
+
+        public static string Score
+        {
+            get => $"Games played = {gamesplayed}: Won = {gameswon}: Lost = {gameslost}";
+        }
+        private static int numgames;
+
         public enum GameStatusEnum { NotStarted, Playing, Winner, Lost, GaveUp, TimesUp }
 
         Random rnd = new();
@@ -25,6 +37,9 @@ namespace HangmanSystem
 
         public Game()
         {
+            numgames++;
+            this.GameName = "Game " + numgames;
+
             for (char c = 'A'; c <= 'Z'; c++)
             {
                 this.Letters.Add(new Letter()
@@ -36,6 +51,27 @@ namespace HangmanSystem
         }
 
         public List<Letter> Letters { get; private set; } = new();
+        public string GameName { get; private set; }
+
+        public string GameStatusDescription
+        {
+            get
+            {
+                string status = this.GameStatus switch
+                {
+                    GameStatusEnum.NotStarted => "Not started",
+                    GameStatusEnum.Playing => "Playing",
+                    GameStatusEnum.Winner => "Won",
+                    GameStatusEnum.Lost => "Lost",
+                    GameStatusEnum.GaveUp => "Gave up",
+                    GameStatusEnum.TimesUp => "Time's up",
+                    _ => ""
+                };
+
+                return $"{this.GameName}: {status}";
+            }
+        }
+
         public string CurrentWord
         {
             get => _currentword;
@@ -89,7 +125,8 @@ namespace HangmanSystem
                 _gamestatus = value;
                 this.InvokePropertyChanged();
                 this.InvokePropertyChanged(nameof(GameOverTitle));
-        this.InvokePropertyChanged(nameof(GameOverMessage));
+                this.InvokePropertyChanged(nameof(GameOverMessage));
+                this.InvokePropertyChanged(nameof(GameStatusDescription));
             }
         }
         public string GameOverTitle
@@ -150,19 +187,7 @@ namespace HangmanSystem
                 DetectLoser();
             }
         }
-        private void EndGame(GameStatusEnum status)
-        {
-            if (this.GameStatus != GameStatusEnum.Playing)
-            {
-                return;
-            }
 
-            this.GameStatus = status;
-
-            this.DisplayWord = string.Join(" ", this.CurrentWord.ToCharArray());
-
-            this.Letters.ForEach(l => l.IsEnabled = false);
-        }
         public void TimerTick()
         {
             if (this.GameStatus == GameStatusEnum.Playing)
@@ -227,9 +252,36 @@ namespace HangmanSystem
             this.GameStatus = GameStatusEnum.Playing;
 
             this.Letters.ForEach(l => l.IsEnabled = true);
+
+            gamesplayed++;
+            ScoreChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        private void EndGame(GameStatusEnum status)
+        {
+            if (this.GameStatus != GameStatusEnum.Playing)
+            {
+                return;
+            }
 
+            this.GameStatus = status;
+
+            this.DisplayWord = string.Join(" ", this.CurrentWord.ToCharArray());
+
+            this.Letters.ForEach(l => l.IsEnabled = false);
+            if (status == GameStatusEnum.Winner)
+            {
+                gameswon++;
+            }
+            else if (status == GameStatusEnum.Lost ||
+                     status == GameStatusEnum.GaveUp ||
+                     status == GameStatusEnum.TimesUp)
+            {
+                gameslost++;
+            }
+
+            ScoreChanged?.Invoke(this, EventArgs.Empty);
+        }
         private void InvokePropertyChanged(
             [CallerMemberName] string propertyname = "")
         {

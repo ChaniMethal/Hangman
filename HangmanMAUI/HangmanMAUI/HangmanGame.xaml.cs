@@ -5,14 +5,20 @@ namespace HangmanMAUI;
 
 public partial class HangmanGame : ContentPage
 {
-    Game game = new();
+    List<Game> lstgame = new() { new Game(), new Game(), new Game() };
+    Game game;
     List<Button> lstbuttons;
     IDispatcherTimer gametimer;
     bool gameOverShown = false;
     public HangmanGame()
     {
         InitializeComponent();
+
+        game = lstgame[0];
         this.BindingContext = game;
+        //lstgame.ForEach(g => g.ScoreChanged += G_ScoreChanged);
+
+        //ScoreLbl.Text = Game.Score;
 
         lstbuttons = new() { ABtn, BBtn, CBtn, DBtn, EBtn, FBtn, GBtn, HBtn, IBtn, JBtn, KBtn, LBtn, MBtn, NBtn, OBtn, PBtn, QBtn, RBtn, SBtn, TBtn, UBtn, VBtn, WBtn, XBtn, YBtn, ZBtn };
 
@@ -20,6 +26,11 @@ public partial class HangmanGame : ContentPage
         gametimer.Interval = TimeSpan.FromSeconds(1);
         gametimer.Tick += Gametimer_Tick;
     }
+
+    //private void G_ScoreChanged(object? sender, EventArgs e)
+    //{
+    //    ScoreLbl.Text = Game.Score;
+    //}
 
     private async void Gametimer_Tick(object? sender, EventArgs e)
     {

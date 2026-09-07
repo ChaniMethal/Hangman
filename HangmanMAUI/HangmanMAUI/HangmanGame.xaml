@@ -11,7 +11,7 @@
             <Button x:Name="StartBtn" Text="START" Grid.Column="2" FontSize="20" FontAttributes="Bold" Padding="20,10" Style="{StaticResource Key=game-buttons}" Clicked="StartBtn_Clicked"/>
             <Button x:Name="GiveUpBtn" Text="GIVE UP" Grid.Column="3" FontSize="20" FontAttributes="Bold" Padding="20,10" Style="{StaticResource Key=game-buttons}" Clicked="GiveUpBtn_Clicked"/>
         </Grid>
-
+        
         <Border Grid.Row="1" Grid.Column="0" Grid.RowSpan="2">
             <Grid RowDefinitions="*,Auto">
                 <Label x:Name="WrongGuessesLbl" Grid.Row="1" Text="{Binding WrongGuessDescription}" BackgroundColor="SkyBlue" TextColor="White" FontSize="18" Padding="10" HorizontalTextAlignment="Center"/>
