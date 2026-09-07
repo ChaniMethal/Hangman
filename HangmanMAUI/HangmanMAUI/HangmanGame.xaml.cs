@@ -1,4 +1,5 @@
 using HangmanSystem;
+using static HangmanSystem.Game;
 
 namespace HangmanMAUI;
 
@@ -7,12 +8,13 @@ public partial class HangmanGame : ContentPage
     Game game = new();
     List<Button> lstbuttons;
     IDispatcherTimer gametimer;
+    bool gameOverShown = false;
     public HangmanGame()
     {
         InitializeComponent();
         this.BindingContext = game;
 
-        lstbuttons = new() { ABtn, BBtn, CBtn, DBtn, EBtn, FBtn, GBtn, HBtn, IBtn, JBtn, KBtn, LBtn, MBtn, NBtn, OBtn, PBtn, QBtn, RBtn, SBtn, TBtn, UBtn, VBtn, WBtn, XBtn, YBtn, ZBtn};
+        lstbuttons = new() { ABtn, BBtn, CBtn, DBtn, EBtn, FBtn, GBtn, HBtn, IBtn, JBtn, KBtn, LBtn, MBtn, NBtn, OBtn, PBtn, QBtn, RBtn, SBtn, TBtn, UBtn, VBtn, WBtn, XBtn, YBtn, ZBtn };
 
         gametimer = Dispatcher.CreateTimer();
         gametimer.Interval = TimeSpan.FromSeconds(1);
@@ -32,31 +34,23 @@ public partial class HangmanGame : ContentPage
 
     private async Task CheckGameStatus()
     {
-        if (game.GameStatus == Game.GameStatusEnum.Winner)
+        if (game.GameStatus == Game.GameStatusEnum.Playing ||
+        game.GameStatus == Game.GameStatusEnum.NotStarted ||
+        gameOverShown)
         {
-            gametimer.Stop();
-            await DisplayAlertAsync("Winner!", "You guessed the word!", "OK");
+            return;
         }
-        else if (game.GameStatus == Game.GameStatusEnum.Lost)
-        {
-            gametimer.Stop();
-            await DisplayAlertAsync("You Lost!", $"The word was {game.CurrentWord}.", "OK");
-        }
-        else if (game.GameStatus == Game.GameStatusEnum.GaveUp)
-        {
-            gametimer.Stop();
-            await DisplayAlertAsync("Game Over", $"The word was {game.CurrentWord}.", "OK");
-        }
-        else if (game.GameStatus == Game.GameStatusEnum.TimesUp)
-        {
-            gametimer.Stop();
-            await DisplayAlertAsync("Time's Up!", $"The word was {game.CurrentWord}.", "OK");
-        }
+
+        gameOverShown = true;
+        gametimer.Stop();
+
+        await DisplayAlertAsync(game.GameOverTitle,game.GameOverMessage,"OK");
     }
 
     private void StartBtn_Clicked(object sender, EventArgs e)
     {
         gametimer.Stop();
+        gameOverShown = false;
         game.StartGame();
         gametimer.Start();
     }
@@ -73,4 +67,3 @@ public partial class HangmanGame : ContentPage
     }
 }
 
-    

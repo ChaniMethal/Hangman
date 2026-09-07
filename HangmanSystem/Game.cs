@@ -7,6 +7,7 @@ namespace HangmanSystem
     public class Game : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
+        public const int MaxWrongGuesses = 6;
 
         public enum GameStatusEnum { NotStarted, Playing, Winner, Lost, GaveUp, TimesUp }
 
@@ -65,7 +66,7 @@ namespace HangmanSystem
                 this.InvokePropertyChanged("WrongGuessDescription");
             }
         }
-        public string WrongGuessDescription { get => $"Wrong Guesses: {this.WrongGuesses}/6"; }
+        public string WrongGuessDescription { get => $"Wrong Guesses: {this.WrongGuesses}/{MaxWrongGuesses}"; }
 
         public int SecondsRemaining
         {
@@ -87,6 +88,37 @@ namespace HangmanSystem
             {
                 _gamestatus = value;
                 this.InvokePropertyChanged();
+                this.InvokePropertyChanged(nameof(GameOverTitle));
+        this.InvokePropertyChanged(nameof(GameOverMessage));
+            }
+        }
+        public string GameOverTitle
+        {
+            get
+            {
+                return this.GameStatus switch
+                {
+                    GameStatusEnum.Winner => "Winner!",
+                    GameStatusEnum.Lost => "You Lost!",
+                    GameStatusEnum.GaveUp => "Game Over",
+                    GameStatusEnum.TimesUp => "Time's Up!",
+                    _ => ""
+                };
+            }
+        }
+
+        public string GameOverMessage
+        {
+            get
+            {
+                return this.GameStatus switch
+                {
+                    GameStatusEnum.Winner => "You guessed the word!",
+                    GameStatusEnum.Lost => $"The word was {this.CurrentWord}.",
+                    GameStatusEnum.GaveUp => $"The word was {this.CurrentWord}.",
+                    GameStatusEnum.TimesUp => $"The word was {this.CurrentWord}.",
+                    _ => ""
+                };
             }
         }
         public void GuessLetter(int letternum)
@@ -118,6 +150,19 @@ namespace HangmanSystem
                 DetectLoser();
             }
         }
+        private void EndGame(GameStatusEnum status)
+        {
+            if (this.GameStatus != GameStatusEnum.Playing)
+            {
+                return;
+            }
+
+            this.GameStatus = status;
+
+            this.DisplayWord = string.Join(" ", this.CurrentWord.ToCharArray());
+
+            this.Letters.ForEach(l => l.IsEnabled = false);
+        }
         public void TimerTick()
         {
             if (this.GameStatus == GameStatusEnum.Playing)
@@ -126,36 +171,23 @@ namespace HangmanSystem
 
                 if (this.SecondsRemaining <= 0)
                 {
-                    this.GameStatus = GameStatusEnum.TimesUp;
-                    this.DisplayWord =
-                        string.Join(" ", this.CurrentWord.ToCharArray());
-
-                    this.Letters.ForEach(l => l.IsEnabled = false);
+                    EndGame(GameStatusEnum.TimesUp);
                 }
             }
         }
+
         public void GiveUp()
         {
             if (this.GameStatus == GameStatusEnum.Playing)
             {
-                this.GameStatus = GameStatusEnum.GaveUp;
-
-                this.DisplayWord =
-                    string.Join(" ", this.CurrentWord.ToCharArray());
-
-                this.Letters.ForEach(l => l.IsEnabled = false);
+                EndGame(GameStatusEnum.GaveUp);
             }
         }
         private void DetectLoser()
         {
-            if (this.WrongGuesses >= 6)
+            if (this.WrongGuesses >= MaxWrongGuesses)
             {
-                this.GameStatus = GameStatusEnum.Lost;
-
-                this.DisplayWord =
-                    string.Join(" ", this.CurrentWord.ToCharArray());
-
-                this.Letters.ForEach(l => l.IsEnabled = false);
+                EndGame(GameStatusEnum.Lost);
             }
         }
 
@@ -163,8 +195,7 @@ namespace HangmanSystem
         {
             if (!cdisplayword.Contains('_'))
             {
-                this.GameStatus = GameStatusEnum.Winner;
-                this.Letters.ForEach(l => l.IsEnabled = false);
+                EndGame(GameStatusEnum.Winner);
             }
         }
 
