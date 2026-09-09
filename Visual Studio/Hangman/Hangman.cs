@@ -1,21 +1,20 @@
-using gnuciDictionary;
+using HangmanSystem;
 
 namespace Hangman
 {
     public partial class Hangman : Form
     {
+        Game game = new();
         List<Button> lstbuttons;
-        string scurrentword = "";
-        Char[] cdisplayword;
-        Random rnd = new();
-        int nwrongguesses = 0;
-        const int GameTimeSeconds = 60;
-        int nsecondsremaining = GameTimeSeconds;
         readonly System.Windows.Forms.Timer gametimer = new();
+        bool gameOverShown = false;
 
         public Hangman()
         {
             InitializeComponent();
+            lblTimer.DataBindings.Add("Text", game, nameof(game.TimerDescription));
+            lblWord.DataBindings.Add("Text", game, nameof(Game.DisplayWord));
+            lblWrongGuesses.DataBindings.Add("Text", game, nameof(Game.WrongGuessDescription));
             btnGiveUp.Enabled = false;
             
             lstbuttons = new() 
@@ -24,19 +23,53 @@ namespace Hangman
                 btnK, btnL, btnM, btnN, btnO, btnP, btnQ, btnR, btnS, btnT, 
                 btnU, btnV, btnW, btnX, btnY, btnZ 
             };
-            lstbuttons.ForEach(b => b.Click += LetterButton_Click);
+            InitializeLetterButtons();
 
             btnStart.Click += BtnStart_Click;
             btnGiveUp.Click += BtnGiveUp_Click;
             gametimer.Interval = 1000;
             gametimer.Tick += GameTimer_Tick;
-            UpdateTimerDisplay();
 
-            lstbuttons.ForEach(b => b.Enabled = false);
+            UpdateLetterButtonColors();
 
             tblMan.Paint += TblMan_Paint;
         }
+        private void InitializeLetterButtons()
+        {
+            for (int i = 0; i < lstbuttons.Count; i++)
+            {
+                Button btn = lstbuttons[i];
+                Letter letter = game.Letters[i];
 
+                btn.Click += LetterButton_Click;
+
+                btn.DataBindings.Add(
+                    "Enabled",
+                    letter,
+                    nameof(Letter.IsEnabled));
+            }
+        }
+        private void CheckGameStatus()
+        {
+            if (game.GameStatus == Game.GameStatusEnum.Playing ||
+                game.GameStatus == Game.GameStatusEnum.NotStarted ||
+                gameOverShown)
+            {
+                return;
+            }
+
+            gameOverShown = true;
+            gametimer.Stop();
+
+            UpdateLetterButtonColors();
+
+            btnGiveUp.Enabled = false;
+            btnGiveUp.BackColor = Color.White;
+
+            MessageBox.Show(
+                game.GameOverMessage,
+                game.GameOverTitle);
+        }
         private void DrawMan(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -49,27 +82,27 @@ namespace Hangman
             g.DrawLine(p, 170, 40, 170, 70);  // rope
 
             // head
-            if (nwrongguesses >= 1)
+            if (game.WrongGuesses >= 1)
                 g.DrawEllipse(p, 145, 70, 50, 50);
 
             // body
-            if (nwrongguesses >= 2)
+            if (game.WrongGuesses >= 2)
                 g.DrawLine(p, 170, 120, 170, 200);
 
             // left arm
-            if (nwrongguesses >= 3)
+            if (game.WrongGuesses >= 3)
                 g.DrawLine(p, 170, 140, 135, 170);
 
             // right arm
-            if (nwrongguesses >= 4)
+            if (game.WrongGuesses >= 4)
                 g.DrawLine(p, 170, 140, 205, 170);
 
             // left leg
-            if (nwrongguesses >= 5)
+            if (game.WrongGuesses >= 5)
                 g.DrawLine(p, 170, 200, 140, 245);
 
             // right leg
-            if (nwrongguesses >= 6)
+            if (game.WrongGuesses >= 6)
                 g.DrawLine(p, 170, 200, 200, 245);
         }
 
@@ -80,139 +113,45 @@ namespace Hangman
        
         private void DisplayWrongGuesses()
         {
-            lblWrongGuesses.Text = "Wrong Guesses: " + nwrongguesses.ToString() + "/6";
-        }
-        private void Loser()
-        {
-            if (nwrongguesses >= 6)
-            {
-                gametimer.Stop();
-                lblWord.Text = string.Join(" ", scurrentword.ToCharArray());
-                DisableLetterButtons();
-                btnGiveUp.Enabled = false;
-                btnGiveUp.BackColor = Color.White;
-                MessageBox.Show("You Lost!");
-            }
-        }
-        private void GiveUp()
-        {
-            gametimer.Stop();
-            lblWord.Text = string.Join(" ", scurrentword.ToCharArray());
-            DisableLetterButtons();
-            btnGiveUp.Enabled = false;
-            btnGiveUp.BackColor = Color.White;
-            MessageBox.Show("You gave up.", "Game Over");
-        }
-        private void Winner()
-        {
-            if (!cdisplayword.Contains('_'))
-            {
-                gametimer.Stop();
-                btnGiveUp.Enabled = false;
-                btnGiveUp.BackColor = Color.White;
-                
-                MessageBox.Show("You Win!");
-                DisableLetterButtons();
-            }
-        }
-        private void UpdateTimerDisplay()
-        {
-            lblTimer.Text = $"Time Left: {nsecondsremaining}s";
+            lblWrongGuesses.Text = game.WrongGuessDescription;
         }
 
         private void GameTimer_Tick(object? sender, EventArgs e)
         {
-            nsecondsremaining--;
-            UpdateTimerDisplay();
-
-            if (nsecondsremaining <= 0)
-            {
-                gametimer.Stop();
-                lblWord.Text = string.Join(" ", scurrentword.ToCharArray());
-                DisableLetterButtons();
-                btnGiveUp.Enabled = false;
-                btnGiveUp.BackColor = Color.White;
-                MessageBox.Show("Time's up! You lost.", "Game Over");
-            }
+            game.TimerTick();
+            CheckGameStatus();
         }
         private void WhenletterIsClicked(Button btn)
         {
-            btn.Enabled = false;
-            
+            int letternum = lstbuttons.IndexOf(btn);
+            game.GuessLetter(letternum);
 
-            string sletter = btn.Text;
-            bool found = false;
-
-            for (int i = 0; i < scurrentword.Length; i++)
-            {
-                if (scurrentword[i].ToString() == sletter)
-                {
-                    cdisplayword[i] = scurrentword[i];
-                    found = true;
-                }
-            }
-
-            if (!found)
-            {
-                nwrongguesses++;
-                tblMan.Invalidate();
-            }
-            lblWord.Text = string.Join(" ", cdisplayword);
+            tblMan.Invalidate();
 
             DisplayWrongGuesses();
-            Winner();
-            Loser();
+            UpdateLetterButtonColors();
+            CheckGameStatus();
         }
-        private void InitializeDisplayWord()
+        private void UpdateLetterButtonColors()
         {
-            cdisplayword = new char[scurrentword.Length];
-
-            for (int i = 0; i < cdisplayword.Length; i++)
+            for (int i = 0; i < lstbuttons.Count; i++)
             {
-                cdisplayword[i] = '_';
+                lstbuttons[i].BackColor =
+                    game.Letters[i].IsEnabled
+                    ? Color.SkyBlue
+                    : Color.White;
             }
-
-            lblWord.Text = string.Join(" ", cdisplayword);
         }
 
-        private void EnableLetterButtons()
-        {
-            lstbuttons.ForEach(b =>
-            {
-                b.Enabled = true;
-                b.BackColor = Color.SkyBlue;
-            });
-        }
-
-        private void DisableLetterButtons()
-        {
-            lstbuttons.ForEach(b =>
-            {
-                b.Enabled = false;
-                b.BackColor = Color.White;
-            });
-        }
-        private void PickRandomWord()
-        {
-            var lst = gnuciDictionary.EnglishDictionary.GetAllWords()
-                .Where(w => w.ToString().Length <= 10)
-                .ToList();
-            scurrentword = lst[rnd.Next(lst.Count)].ToString().ToUpper();
-            scurrentword = new string(scurrentword.Where(char.IsLetter).ToArray());
-        }
-  
         private void Start()
         {
+            gameOverShown = false;
             btnGiveUp.Enabled = true;
             btnGiveUp.BackColor = Color.SkyBlue;
 
-            PickRandomWord();
-            InitializeDisplayWord();
-            EnableLetterButtons();
+            game.StartGame();
+            UpdateLetterButtonColors();
 
-            nwrongguesses = 0;
-            nsecondsremaining = GameTimeSeconds;
-            UpdateTimerDisplay();
             gametimer.Start();
             tblMan.Invalidate();
             DisplayWrongGuesses();
@@ -220,7 +159,8 @@ namespace Hangman
         
         private void BtnGiveUp_Click(object? sender, EventArgs e)
         {
-            GiveUp();
+            game.GiveUp();
+            CheckGameStatus();
         }
 
         private void BtnStart_Click(object? sender, EventArgs e)

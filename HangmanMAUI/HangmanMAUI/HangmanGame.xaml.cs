@@ -16,9 +16,7 @@ public partial class HangmanGame : ContentPage
 
         game = lstgame[0];
         this.BindingContext = game;
-        //lstgame.ForEach(g => g.ScoreChanged += G_ScoreChanged);
-
-        //ScoreLbl.Text = Game.Score;
+        lstgame.ForEach(g => g.ScoreChanged += G_ScoreChanged);
 
         lstbuttons = new() { ABtn, BBtn, CBtn, DBtn, EBtn, FBtn, GBtn, HBtn, IBtn, JBtn, KBtn, LBtn, MBtn, NBtn, OBtn, PBtn, QBtn, RBtn, SBtn, TBtn, UBtn, VBtn, WBtn, XBtn, YBtn, ZBtn };
 
@@ -27,10 +25,10 @@ public partial class HangmanGame : ContentPage
         gametimer.Tick += Gametimer_Tick;
     }
 
-    //private void G_ScoreChanged(object? sender, EventArgs e)
-    //{
-    //    ScoreLbl.Text = Game.Score;
-    //}
+    private void G_ScoreChanged(object? sender, EventArgs e)
+    {
+        game.RefreshScore();
+    }
 
     private async void Gametimer_Tick(object? sender, EventArgs e)
     {

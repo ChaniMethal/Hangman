@@ -19,6 +19,11 @@ namespace HangmanSystem
         {
             get => $"Games played = {gamesplayed}: Won = {gameswon}: Lost = {gameslost}";
         }
+        public string ScoreDescription
+        {
+            get => Score;
+        }
+
         private static int numgames;
 
         public enum GameStatusEnum { NotStarted, Playing, Winner, Lost, GaveUp, TimesUp }
@@ -281,6 +286,10 @@ namespace HangmanSystem
             }
 
             ScoreChanged?.Invoke(this, EventArgs.Empty);
+        }
+        public void RefreshScore()
+        {
+            this.InvokePropertyChanged(nameof(ScoreDescription));
         }
         private void InvokePropertyChanged(
             [CallerMemberName] string propertyname = "")

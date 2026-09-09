@@ -6,12 +6,15 @@
     <Grid BackgroundColor="SteelBlue" Margin="20" ColumnDefinitions="*,2*" RowDefinitions="Auto,*,*" ColumnSpacing="10" RowSpacing="10">
 
         <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" ColumnDefinitions="2*,*,Auto,Auto" ColumnSpacing="8">
-            <Label Text="HANGMAN" Grid.Column="0" FontSize="40" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+            <VerticalStackLayout>
+                <Label Text="HANGMAN" Grid.Column="0" FontSize="40" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                <Label x:Name="ScoreLbl" Text="{Binding ScoreDescription}" FontSize="14" TextColor="White" HorizontalTextAlignment="Center"/>
+            </VerticalStackLayout>
             <Label Text="{Binding TimerDescription}" Grid.Column="1" FontSize="20" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" BackgroundColor="SkyBlue"/>
             <Button x:Name="StartBtn" Text="START" Grid.Column="2" FontSize="20" FontAttributes="Bold" Padding="20,10" Style="{StaticResource Key=game-buttons}" Clicked="StartBtn_Clicked"/>
             <Button x:Name="GiveUpBtn" Text="GIVE UP" Grid.Column="3" FontSize="20" FontAttributes="Bold" Padding="20,10" Style="{StaticResource Key=game-buttons}" Clicked="GiveUpBtn_Clicked"/>
         </Grid>
-        
+
         <Border Grid.Row="1" Grid.Column="0" Grid.RowSpan="2">
             <Grid RowDefinitions="*,Auto">
                 <Label x:Name="WrongGuessesLbl" Grid.Row="1" Text="{Binding WrongGuessDescription}" BackgroundColor="SkyBlue" TextColor="White" FontSize="18" Padding="10" HorizontalTextAlignment="Center"/>
@@ -22,7 +25,7 @@
         <Border Grid.Row="1" Grid.Column="1" BackgroundColor="SkyBlue">
             <Label x:Name="WordLbl" Text="{Binding DisplayWord}" FontSize="35" TextColor="White" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
         </Border>
-        
+
 
         <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*,*,*,*,*,*,*,*,*,*" RowDefinitions="*,*,*" ColumnSpacing="5" RowSpacing="5">
             <Button x:Name="ABtn" Grid.Row="0" Grid.Column="0" Style="{StaticResource Key=game-buttons}" Clicked="BtnLetter_Clicked" BindingContext="{Binding Letters[0]}" Text="{Binding LetterValue}" IsEnabled="{Binding IsEnabled}"/>
@@ -51,7 +54,7 @@
             <Button x:Name="XBtn" Grid.Row="2" Grid.Column="5" Style="{StaticResource Key=game-buttons}" Clicked="BtnLetter_Clicked" BindingContext="{Binding Letters[23]}" Text="{Binding LetterValue}" IsEnabled="{Binding IsEnabled}"/>
             <Button x:Name="YBtn" Grid.Row="2" Grid.Column="6" Style="{StaticResource Key=game-buttons}" Clicked="BtnLetter_Clicked" BindingContext="{Binding Letters[24]}" Text="{Binding LetterValue}" IsEnabled="{Binding IsEnabled}"/>
             <Button x:Name="ZBtn" Grid.Row="2" Grid.Column="7" Style="{StaticResource Key=game-buttons}" Clicked="BtnLetter_Clicked" BindingContext="{Binding Letters[25]}" Text="{Binding LetterValue}" IsEnabled="{Binding IsEnabled}"/>
-                                                          
+
         </Grid>
 
     </Grid>
