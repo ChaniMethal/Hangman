@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HangmanMAUI.HangmanGame"
              Title="HangmanGame">
-    <Grid BackgroundColor="SteelBlue" Margin="20" ColumnDefinitions="*,2*" RowDefinitions="Auto,*,*" ColumnSpacing="10" RowSpacing="10">
+    <Grid BackgroundColor="SteelBlue" Margin="20" ColumnDefinitions="*,2*" RowDefinitions="Auto,Auto,*,*" ColumnSpacing="10" RowSpacing="10">
 
         <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" ColumnDefinitions="2*,*,Auto,Auto" ColumnSpacing="8">
             <VerticalStackLayout>
@@ -14,20 +14,26 @@
             <Button x:Name="StartBtn" Text="START" Grid.Column="2" FontSize="20" FontAttributes="Bold" Padding="20,10" Style="{StaticResource Key=game-buttons}" Clicked="StartBtn_Clicked"/>
             <Button x:Name="GiveUpBtn" Text="GIVE UP" Grid.Column="3" FontSize="20" FontAttributes="Bold" Padding="20,10" Style="{StaticResource Key=game-buttons}" Clicked="GiveUpBtn_Clicked"/>
         </Grid>
+        
+        <HorizontalStackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="Center" Spacing="10">
+            <Button x:Name="Game1Btn" Text="GAME 1" Clicked="Game1Btn_Clicked"/>
+            <Button x:Name="Game2Btn" Text="GAME 2" Clicked="Game2Btn_Clicked"/>
+            <Button x:Name="Game3Btn" Text="GAME 3" Clicked="Game3Btn_Clicked"/>
+        </HorizontalStackLayout>
 
-        <Border Grid.Row="1" Grid.Column="0" Grid.RowSpan="2">
-            <Grid RowDefinitions="*,Auto">
-                <Label x:Name="WrongGuessesLbl" Grid.Row="1" Text="{Binding WrongGuessDescription}" BackgroundColor="SkyBlue" TextColor="White" FontSize="18" Padding="10" HorizontalTextAlignment="Center"/>
-            </Grid>
+        <Border Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" BackgroundColor="SkyBlue">
+
+            <Label x:Name="WrongGuessesLbl" Text="{Binding WrongGuessDescription}" TextColor="White" FontSize="36" FontAttributes="Bold" Padding="20" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+
         </Border>
 
 
-        <Border Grid.Row="1" Grid.Column="1" BackgroundColor="SkyBlue">
+        <Border Grid.Row="2" Grid.Column="1" BackgroundColor="SkyBlue">
             <Label x:Name="WordLbl" Text="{Binding DisplayWord}" FontSize="35" TextColor="White" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
         </Border>
 
 
-        <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*,*,*,*,*,*,*,*,*,*" RowDefinitions="*,*,*" ColumnSpacing="5" RowSpacing="5">
+        <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="*,*,*,*,*,*,*,*,*,*" RowDefinitions="*,*,*" ColumnSpacing="5" RowSpacing="5">
             <Button x:Name="ABtn" Grid.Row="0" Grid.Column="0" Style="{StaticResource Key=game-buttons}" Clicked="BtnLetter_Clicked" BindingContext="{Binding Letters[0]}" Text="{Binding LetterValue}" IsEnabled="{Binding IsEnabled}"/>
             <Button x:Name="BBtn" Grid.Row="0" Grid.Column="1" Style="{StaticResource Key=game-buttons}" Clicked="BtnLetter_Clicked" BindingContext="{Binding Letters[1]}" Text="{Binding LetterValue}" IsEnabled="{Binding IsEnabled}"/>
             <Button x:Name="CBtn" Grid.Row="0" Grid.Column="2" Style="{StaticResource Key=game-buttons}" Clicked="BtnLetter_Clicked" BindingContext="{Binding Letters[2]}" Text="{Binding LetterValue}" IsEnabled="{Binding IsEnabled}"/>

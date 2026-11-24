@@ -5,6 +5,7 @@ namespace HangmanMAUI;
 
 public partial class HangmanGame : ContentPage
 {
+
     List<Game> lstgame = new() { new Game(), new Game(), new Game() };
     Game game;
     List<Button> lstbuttons;
@@ -23,8 +24,28 @@ public partial class HangmanGame : ContentPage
         gametimer = Dispatcher.CreateTimer();
         gametimer.Interval = TimeSpan.FromSeconds(1);
         gametimer.Tick += Gametimer_Tick;
+        SwitchGame(0);
     }
+    private void SwitchGame(int gamenum)
+    {
+        gametimer.Stop();
 
+        game = lstgame[gamenum];
+        this.BindingContext = game;
+
+        gameOverShown =
+       game.GameStatus != Game.GameStatusEnum.Playing &&
+       game.GameStatus != Game.GameStatusEnum.NotStarted;
+
+        if (game.GameStatus == Game.GameStatusEnum.Playing)
+        {
+            gametimer.Start();
+        }
+
+        Game1Btn.BackgroundColor = gamenum == 0 ? Colors.Navy : Colors.SkyBlue;
+        Game2Btn.BackgroundColor = gamenum == 1 ? Colors.Navy : Colors.SkyBlue;
+        Game3Btn.BackgroundColor = gamenum == 2 ? Colors.Navy : Colors.SkyBlue;
+    }
     private void G_ScoreChanged(object? sender, EventArgs e)
     {
         game.RefreshScore();
@@ -73,6 +94,21 @@ public partial class HangmanGame : ContentPage
     {
         game.GuessLetter(lstbuttons.IndexOf((Button)sender));
         await CheckGameStatus();
+    }
+
+    private void Game1Btn_Clicked(object sender, EventArgs e)
+    {
+        SwitchGame(0);
+    }
+
+    private void Game2Btn_Clicked(object sender, EventArgs e)
+    {
+        SwitchGame(1);
+    }
+
+    private void Game3Btn_Clicked(object sender, EventArgs e)
+    {
+        SwitchGame(2);
     }
 }
 
