@@ -11,11 +11,11 @@ namespace HangmanSystem
 
         public event EventHandler? ScoreChanged;
 
-        private int gamesplayed;
-        private int gameswon;
-        private int gameslost;
+        private static int gamesplayed;
+        private static int gameswon;
+        private static int gameslost;
 
-        public string Score
+        public static string Score
         {
             get => $"Games played = {gamesplayed}: Won = {gameswon}: Lost = {gameslost}";
         }

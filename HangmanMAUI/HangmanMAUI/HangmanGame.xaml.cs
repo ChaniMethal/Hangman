@@ -48,7 +48,7 @@ public partial class HangmanGame : ContentPage
     }
     private void G_ScoreChanged(object? sender, EventArgs e)
     {
-        game.RefreshScore();
+        ScoreLbl.Text = Game.Score;
     }
 
     private async void Gametimer_Tick(object? sender, EventArgs e)
